@@ -14,11 +14,13 @@ h2 {
   display: flex;
   justify-content: space-between;
   margin-top: 100px;
+  position: relative;
 
 }
 
 .side-bar {
-  width: 100px;
+  display: flex;
+  /* width: 100px; */
   height: 700px;
 }
 
@@ -27,6 +29,15 @@ h2 {
   height: 50px;
   font-size: 25px;
   padding-top: 25px;
+}
+
+.side-bar-column {
+  width: 100px;
+}
+
+#cart-body {
+  width: 400px;
+  /* display: none; */
 }
 
 .side-bar-title {
@@ -40,5 +51,8 @@ h2 {
 
 .inventory-item {
   margin-bottom: 10px;
+}
+
+#cart {
 }
 
