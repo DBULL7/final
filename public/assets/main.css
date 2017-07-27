@@ -53,6 +53,7 @@ h2 {
   margin-bottom: 10px;
 }
 
-#cart {
+#cart-body {
+  display: none;
 }
 
