@@ -24,9 +24,11 @@ let cardMaker = (data) => {
     addToCartHtml.addEventListener('click', () => {
       let title = item.title
       let price = item.price
+
       let cart = JSON.parse(localStorage.getItem('cart')) || []
       cart.push({title: title, price: price})
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem('cart', JSON.stringify(cart))
+      $('#items-list').append(`<div><p>${title}</p><p>Price: ${price}</p></div>`)
     })
 
     cardHtml.append(titleHtml)
@@ -39,15 +41,5 @@ let cardMaker = (data) => {
 }
 
 $('#cart-reveal-button').on('click', () => {
-  console.log('fired')
+  $('#cart-body').toggle()
 })
-
-// $('#cards-wrapper').on('click', (e) => {
-//   let item = $(e.target).parent()[0]
-//   let values = $(item).text()
-//   let actualValue = values.replace('Add to Cart', '')
-//   let test = actualValue.split('\n')
-//   let cart = JSON.parse(localStorage.getItem('cart')) || []
-//   cart.push(test)
-//   localStorage.setItem('cart', JSON.stringify(cart));
-// })
