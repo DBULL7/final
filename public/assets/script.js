@@ -6,16 +6,32 @@ $('document').ready(() => {
   }).catch(err => console.log(err))
 
   let items = localStorage.getItem('cart')
-  let parsedItems = JSON.parse(items)
-  for (let i = 0; i < parsedItems.length; i++) {
-    let price = Number(parsedItems[i].price)
-    let title = parsedItems[i].title
+  if (items) {
+    let parsedItems = JSON.parse(items)
+    for (let i = 0; i < parsedItems.length; i++) {
+      let price = Number(parsedItems[i].price)
+      let title = parsedItems[i].title
 
-    $('#items-list').append(`<div><p>${title}</p><p>Price: ${price}</p></div>`)
-      let currentTotal = $('.cart-total').text()
-      let add = Number(currentTotal) + Number(price)
-      $('.cart-total').text(add.toFixed(2))
+      $('#items-list').append(`<div><p>${title}</p><p>Price: ${price}</p></div>`)
+        let currentTotal = $('.cart-total').text()
+        let add = Number(currentTotal) + Number(price)
+        $('.cart-total').text(add.toFixed(2))
+    }
   }
+
+  fetch('/api/v1/orders')
+  .then(res => res.json())
+  .then(data => {
+    console.log(data)
+    data.orders.forEach(order => {
+      $('#orders').append(`
+      <div>
+        <p>Order ID: ${order.id}</p>
+        <p>Order Date: ${order.created_at}</p>
+        <p>Total Price: ${order.total}</p>
+      </div>`)
+    })
+  })
 })
 
 let cardMaker = (data) => {
@@ -61,5 +77,30 @@ $('#cart-reveal-button').on('click', () => {
 })
 
 $('#checkout-button').on('click', () => {
-  console.log('fired')
+  let orderTotal = $('.cart-total').text()
+  fetch('/api/v1/orders', {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      total: orderTotal
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    let order = data[0]
+    $('#orders').append(`
+      <div>
+        <p>Order ID: ${order.id}</p>
+        <p>Order Date: ${order.created_at}</p>
+        <p>Total Price: ${order.total}</p>
+      </div>`)
+    $('#items-list').empty()
+    $('.cart-total').text('')
+    localStorage.clear();
+  }).catch(err => console.log(err))
+  
+})
+
+$('#history-reveal-button').on('click', () => {
+  $('#order-history-body').toggle()
 })
