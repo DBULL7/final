@@ -1,0 +1,44 @@
+* {
+  border: 1px solid black;
+}
+
+body {
+  margin: 0px;
+}
+
+h2 {
+  text-align: center;
+}
+
+#main {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 100px;
+
+}
+
+.side-bar {
+  width: 100px;
+  height: 700px;
+}
+
+.reveal-button {
+  text-align: center;
+  height: 50px;
+  font-size: 25px;
+  padding-top: 25px;
+}
+
+.side-bar-title {
+  margin-top: 275px;
+  text-align: center;
+}
+
+.add-to-cart {
+  width: 100%;
+}
+
+.inventory-item {
+  margin-bottom: 10px;
+}
+
