@@ -5,9 +5,17 @@ $('document').ready(() => {
     cardMaker(data)
   }).catch(err => console.log(err))
 
-  let items = localStorage.getItem('cart');
+  let items = localStorage.getItem('cart')
   let parsedItems = JSON.parse(items)
-  
+  for (let i = 0; i < parsedItems.length; i++) {
+    let price = Number(parsedItems[i].price)
+    let title = parsedItems[i].title
+
+    $('#items-list').append(`<div><p>${title}</p><p>Price: ${price}</p></div>`)
+      let currentTotal = $('.cart-total').text()
+      let add = Number(currentTotal) + Number(price)
+      $('.cart-total').text(add.toFixed(2))
+  }
 })
 
 let cardMaker = (data) => {
@@ -35,11 +43,8 @@ let cardMaker = (data) => {
       localStorage.setItem('cart', JSON.stringify(cart))
       $('#items-list').append(`<div><p>${title}</p><p>Price: ${price}</p></div>`)
       let currentTotal = $('.cart-total').text()
-      console.log(currentTotal)
-      console.log(typeof +price)
-      let test = Number(currentTotal) + Number(price)
-      console.log(test)
-      $('.cart-total').text(test)
+      let add = Number(currentTotal) + Number(price)
+      $('.cart-total').text(add.toFixed(2))
     })
 
     cardHtml.append(titleHtml)
@@ -53,4 +58,8 @@ let cardMaker = (data) => {
 
 $('#cart-reveal-button').on('click', () => {
   $('#cart-body').toggle()
+})
+
+$('#checkout-button').on('click', () => {
+  console.log('fired')
 })
