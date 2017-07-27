@@ -17,3 +17,5 @@ app.listen(port, () => {
   process.stdout.write('\033c')
   console.log(`Amazon Final listening on ${port}`)
 })
+
+module.exports = app
