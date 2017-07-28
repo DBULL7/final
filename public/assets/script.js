@@ -12,7 +12,7 @@ $('document').ready(() => {
       let price = Number(parsedItems[i].price)
       let title = parsedItems[i].title
 
-      $('#items-list').append(`<div><p>${title}</p><p>Price: ${price}</p></div>`)
+      $('#items-list').append(`<div class="cart-item"><p class="cart-item-title">${title}</p><p class="cart-item-price">Price: $${price}</p></div>`)
         let currentTotal = $('.cart-total').text()
         let add = Number(currentTotal) + Number(price)
         $('.cart-total').text(add.toFixed(2))
@@ -22,13 +22,14 @@ $('document').ready(() => {
   fetch('/api/v1/orders')
   .then(res => res.json())
   .then(data => {
-    console.log(data)
     data.orders.forEach(order => {
-      $('#orders').append(`
-      <div>
+      let date = new Date(order.created_at);
+      let displayDate = date.toString()
+      $('#orders').prepend(`
+      <div class="order-in-history">
         <p>Order ID: ${order.id}</p>
-        <p>Order Date: ${order.created_at}</p>
-        <p>Total Price: ${order.total}</p>
+        <p>Order Date: ${displayDate}</p>
+        <p>Total Price: $${order.total}</p>
       </div>`)
     })
   })
@@ -39,25 +40,29 @@ let cardMaker = (data) => {
     let cardHtml = document.createElement('div')
     cardHtml.classList.add('inventory-item')
     let titleHtml = document.createElement('h4')
+    titleHtml.classList.add('card-title')
     titleHtml.innerHTML += item.title
     let descriptionHtml = document.createElement('p')
+    descriptionHtml.classList.add('card-description')
     descriptionHtml.innerHTML += item.description
     let imgHtml = document.createElement('img')
     imgHtml.src = item.picture
     let priceHtml = document.createElement('p')
-    priceHtml.innerHTML += `Price: ${(item.price / 100).toFixed(2)}`
+    priceHtml.classList.add('card-price')
+    priceHtml.innerHTML += `Price: $${(item.price / 100).toFixed(2)}`
     let addToCartHtml = document.createElement('button')
     addToCartHtml.classList.add('add-to-cart')
     addToCartHtml.innerHTML += 'Add to Cart'
 
     addToCartHtml.addEventListener('click', () => {
+      
       let title = item.title
       let price = (item.price / 100).toFixed(2)
 
       let cart = JSON.parse(localStorage.getItem('cart')) || []
       cart.push({title: title, price: price})
       localStorage.setItem('cart', JSON.stringify(cart))
-      $('#items-list').append(`<div><p>${title}</p><p>Price: ${price}</p></div>`)
+      $('#items-list').append(`<div class="cart-item"><p class="cart-item-title">${title}</p><p class="cart-item-price">Price: ${price}</p></div>`)
       let currentTotal = $('.cart-total').text()
       let add = Number(currentTotal) + Number(price)
       $('.cart-total').text(add.toFixed(2))
@@ -97,6 +102,8 @@ $('#checkout-button').on('click', () => {
     $('#items-list').empty()
     $('.cart-total').text('')
     localStorage.clear();
+    $('#cart-body').hide()
+    $('#order-history-body').show()
   }).catch(err => console.log(err))
   
 })
