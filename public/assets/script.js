@@ -93,7 +93,7 @@ $('#checkout-button').on('click', () => {
   .then(res => res.json())
   .then(data => {
     let order = data[0]
-    $('#orders').append(`
+    $('#orders').prepend(`
       <div>
         <p>Order ID: ${order.id}</p>
         <p>Order Date: ${order.created_at}</p>
