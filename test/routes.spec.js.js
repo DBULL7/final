@@ -51,6 +51,15 @@ describe('API Routes', () => {
     })
   })
 
+  it('should not get the inventory on a bad path', (done) => {
+    chai.request(server)
+      .get('/inventory')
+      .end((err, response) => {
+        response.should.have.status(404)
+        done()
+      })
+  })
+
   it('should get all previous orders', (done) => {
     chai.request(server)
     .get('/api/v1/orders')
@@ -61,6 +70,15 @@ describe('API Routes', () => {
       response.body.orders.should.be.a('array')
       response.body.orders[0].id.should.equal(1)
       response.body.orders[0].total.should.equal('14.00')
+      done()
+    })
+  })
+
+  it('should not get previous orders on bad path', (done) => {
+    chai.request(server)
+    .get('/orders')
+    .end((err, response) => {
+      response.should.have.status(404)
       done()
     })
   })
@@ -79,15 +97,27 @@ describe('API Routes', () => {
       done()
     })
   })
-   // Tried multiple ways to force a sad path but they are all failing. Cannot determine why with time remaining
-   it.skip('should fail to make a new order with bad data', (done) => {
+
+   it('should fail to make a new order with no data', (done) => {
     chai.request(server)
     .post('/api/v1/orders')
     .send({
     })
     .end((err, response) => {
-      response.should.have.status(500)
-      console.log(response.body)
+      response.should.have.status(403)
+      response.body.msg.should.equal('No body found, make sure to JSON stringify')
+      done()
+    })
+  })
+   it('should fail to make a new order with bad data', (done) => {
+    chai.request(server)
+    .post('/api/v1/orders')
+    .send({
+      total: 'bad'
+    })
+    .end((err, response) => {
+      response.should.have.status(403)
+      response.body.msg.should.equal('Total is not a number')
       done()
     })
   })

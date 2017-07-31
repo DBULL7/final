@@ -12,7 +12,9 @@ const inventory = (req, res) => {
 
 const newOrder = (req, res) => {
   let order = req.body
+  if (!order.total) return res.status(403).json({msg: 'No body found, make sure to JSON stringify'})
   let total = Number(order.total)
+  if (isNaN(total)) return res.status(403).json({msg: 'Total is not a number'})
   database('orders').returning(['id','total', 'created_at']).insert({total: total})
   .then(order => {
     res.status(201).send(order)
