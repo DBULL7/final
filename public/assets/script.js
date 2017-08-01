@@ -95,7 +95,6 @@ $('#checkout-button').on('click', () => {
     let order = data[0]
     let date = new Date(order.created_at);
     let displayDate = date.toString()
-    console.log(displayDate)
     $('#orders').prepend(`
       <div class="order-in-history">
         <p>Order ID: ${order.id}</p>
